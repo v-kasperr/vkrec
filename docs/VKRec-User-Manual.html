@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VKRec — руководство пользователя</title>
+<style>
+  :root {
+    --accent: #2f6bf0;
+    --accent-soft: #eaf1fe;
+    --text: #1d1d1f;
+    --muted: #6e6e73;
+    --border: #e5e5ea;
+    --bg-soft: #f7f7f9;
+    --warn-bg: #fff7e6;
+    --warn-border: #f0c36d;
+    --code-bg: #f2f2f7;
+  }
+  * { box-sizing: border-box; }
+  a { color: var(--accent); }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+    color: var(--text);
+    margin: 0;
+    line-height: 1.6;
+    background: #fff;
+  }
+  .page {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 48px 40px 80px;
+  }
+
+  /* Титул */
+  .hero {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 32px;
+    margin-bottom: 40px;
+  }
+  .hero .app-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 14px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    margin-bottom: 18px;
+  }
+  .hero h1 { font-size: 40px; margin: 0 0 10px; letter-spacing: -0.02em; }
+  .hero p.subtitle { font-size: 18px; color: var(--muted); margin: 0; }
+  .hero .meta { margin-top: 14px; font-size: 13px; color: var(--muted); }
+
+  /* Оглавление */
+  nav.toc {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px 26px;
+    margin-bottom: 48px;
+  }
+  nav.toc h2 { margin: 0 0 12px; font-size: 15px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+  nav.toc ol { margin: 0; padding-left: 22px; columns: 2; column-gap: 40px; }
+  nav.toc li { margin: 4px 0; break-inside: avoid; }
+  nav.toc a { color: var(--accent); text-decoration: none; }
+  nav.toc a:hover { text-decoration: underline; }
+
+  /* Секции */
+  section { margin-bottom: 48px; }
+  h2 {
+    font-size: 26px;
+    letter-spacing: -0.01em;
+    margin: 0 0 6px;
+    padding-top: 8px;
+  }
+  h2 .num { color: var(--accent); margin-right: 8px; }
+  h3 { font-size: 18px; margin: 26px 0 8px; }
+  p { margin: 10px 0; }
+  ul, ol { margin: 10px 0; padding-left: 24px; }
+  li { margin: 5px 0; }
+  .lead { color: var(--muted); font-size: 16px; margin-bottom: 18px; }
+
+  /* Элементы */
+  kbd {
+    font-family: "SF Mono", ui-monospace, Menlo, monospace;
+    font-size: 13px;
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-bottom-width: 2px;
+    border-radius: 6px;
+    padding: 2px 8px;
+    white-space: nowrap;
+  }
+  code {
+    font-family: "SF Mono", ui-monospace, Menlo, monospace;
+    font-size: 13px;
+    background: var(--code-bg);
+    border-radius: 5px;
+    padding: 2px 6px;
+  }
+  pre {
+    background: #1e1e26;
+    color: #e8e8ef;
+    border-radius: 10px;
+    padding: 16px 20px;
+    overflow-x: auto;
+    font-family: "SF Mono", ui-monospace, Menlo, monospace;
+    font-size: 13.5px;
+    line-height: 1.5;
+  }
+  pre code { background: none; padding: 0; color: inherit; }
+
+  .ui { font-weight: 600; }
+
+  /* Карточки-шаги */
+  .steps { counter-reset: step; list-style: none; padding: 0; margin: 16px 0; }
+  .steps > li {
+    counter-increment: step;
+    position: relative;
+    padding: 0 0 18px 52px;
+    margin: 0;
+  }
+  .steps > li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0; top: 0;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 700;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .steps > li:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    left: 15px; top: 36px; bottom: 2px;
+    width: 2px;
+    background: var(--border);
+  }
+  .steps h4 { margin: 4px 0 4px; font-size: 16px; }
+  .steps p { margin: 4px 0; color: var(--muted); font-size: 14.5px; }
+  .steps pre { margin: 10px 0 0; }
+
+  /* Блоки-подсказки */
+  .callout {
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin: 18px 0;
+    border: 1px solid;
+    font-size: 14.5px;
+  }
+  .callout .title { font-weight: 700; display: block; margin-bottom: 4px; }
+  .callout.warning { background: var(--warn-bg); border-color: var(--warn-border); }
+  .callout.info { background: var(--accent-soft); border-color: #b9d0fa; }
+  .callout.success { background: #edf9f0; border-color: #a8dcb5; }
+
+  /* Таблицы */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 14.5px;
+  }
+  th, td {
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  th {
+    background: var(--bg-soft);
+    font-size: 12.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+  }
+  tr:last-child td { border-bottom: none; }
+  table.bordered { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+
+  /* Теги-пилюли для иллюстрации */
+  .pill {
+    display: inline-block;
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 999px;
+  }
+  .pill.blue { background: #e3ecfd; color: #2f6bf0; }
+  .pill.green { background: #e2f4e7; color: #1f9d47; }
+  .pill.orange { background: #fdeede; color: #ec8a20; }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding-top: 20px;
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  /* Печать / PDF */
+  @media print {
+    .page { max-width: none; padding: 0 8mm; }
+    nav.toc a { color: var(--text); }
+    section { break-inside: avoid-page; }
+    section.allow-break { break-inside: auto; }
+    h2 { break-after: avoid; }
+    pre { white-space: pre-wrap; }
+    .hero { padding-top: 10mm; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ═══════════ Титул ═══════════ -->
+  <header class="hero">
+    <div class="app-badge">🎙 VKRec для macOS</div>
+    <h1>Руководство пользователя</h1>
+    <p class="subtitle">Запись встреч и звонков, расшифровка с разбивкой по спикерам, саммари и протоколы — в одном приложении.</p>
+    <div class="meta">Версия приложения 1.0.14 · июль 2026</div>
+  </header>
+
+  <!-- ═══════════ Оглавление ═══════════ -->
+  <nav class="toc">
+    <h2>Содержание</h2>
+    <ol>
+      <li><a href="#about">О приложении</a></li>
+      <li><a href="#install">Установка</a></li>
+      <li><a href="#permissions">Разрешения macOS</a></li>
+      <li><a href="#setup">Первая настройка</a></li>
+      <li><a href="#recording">Запись</a></li>
+      <li><a href="#hotkeys">Горячие клавиши и меню-бар</a></li>
+      <li><a href="#history">История и карточка записи</a></li>
+      <li><a href="#summary">Саммари и итоги встречи</a></li>
+      <li><a href="#tags">Теги</a></li>
+      <li><a href="#providers">Провайдеры расшифровки</a></li>
+      <li><a href="#updates">Обновления</a></li>
+      <li><a href="#faq">Частые вопросы</a></li>
+    </ol>
+  </nav>
+
+  <!-- ═══════════ 1. О приложении ═══════════ -->
+  <section id="about">
+    <h2><span class="num">1.</span>О приложении</h2>
+    <p class="lead">VKRec записывает звук с микрофона и/или системный звук (Zoom, Meet, Telegram-звонки), показывает живую расшифровку прямо во время записи, а после остановки делает точную расшифровку через облачные сервисы.</p>
+    <ul>
+      <li><b>Запись</b> — микрофон, системный звук или оба сразу.</li>
+      <li><b>Живое превью</b> — текст появляется на экране по мере речи.</li>
+      <li><b>Точная расшифровка</b> — Whisper (OpenRouter), Deepgram или Gladia; последние два умеют разбивать текст по спикерам (диалог).</li>
+      <li><b>Саммари</b> — краткое резюме + автоматическое название записи.</li>
+      <li><b>Итоги встречи</b> — красивый протокол (резюме, решения, задачи) с сохранением в PDF.</li>
+      <li><b>История</b> — все записи с аудио, поиском, тегами и фильтрами.</li>
+      <li><b>Авто-обновления</b> — новые версии ставятся сами, в фоне.</li>
+    </ul>
+  </section>
+
+  <!-- ═══════════ 2. Установка ═══════════ -->
+  <section id="install">
+    <h2><span class="num">2.</span>Установка</h2>
+    <p class="lead">Приложение поставляется файлом <code>VKRec-x.x.x.dmg</code>.</p>
+
+    <ol class="steps">
+      <li>
+        <h4>Откройте DMG и перетащите приложение</h4>
+        <p>Двойной клик по <code>VKRec-x.x.x.dmg</code> → в открывшемся окне перетащите <span class="ui">VKRec.app</span> на ярлык <span class="ui">Applications</span>.</p>
+      </li>
+      <li>
+        <h4>Запустите VKRec</h4>
+        <p>Откройте приложение из папки <span class="ui">Программы</span> или через Spotlight. При первом запуске macOS попросит выдать разрешения — см. следующий раздел.</p>
+      </li>
+      <li>
+        <h4>Если запуск заблокирован — снимите карантин</h4>
+        <p>В зависимости от того, как файл попал на ваш Mac, macOS может пометить его как «загруженный из интернета» и заблокировать запуск (приложение подписано самоподписанным сертификатом, не через App Store). Это возможно, но происходит не всегда. Если увидели сообщение «Приложение повреждено» или «Не удаётся проверить разработчика» — откройте <span class="ui">Терминал</span> (Spotlight → «Терминал») и выполните:</p>
+        <pre><code>xattr -dr com.apple.quarantine /Applications/VKRec.app</code></pre>
+        <p>Затем запустите приложение снова.</p>
+      </li>
+    </ol>
+
+    <div class="callout warning">
+      <span class="title">⚠️ Про команду снятия карантина</span>
+      Команда безопасна: она лишь убирает метку «скачано из интернета» с приложения. Нужна максимум один раз — при первой установке; авто-обновления ставятся без карантина.
+    </div>
+  </section>
+
+  <!-- ═══════════ 3. Разрешения ═══════════ -->
+  <section id="permissions">
+    <h2><span class="num">3.</span>Разрешения macOS</h2>
+    <p class="lead">При первом запуске VKRec запросит три разрешения. Все они нужны для работы записи и живой расшифровки.</p>
+
+    <table class="bordered">
+      <tr><th>Разрешение</th><th>Зачем нужно</th></tr>
+      <tr>
+        <td><b>Микрофон</b></td>
+        <td>Запись вашего голоса.</td>
+      </tr>
+      <tr>
+        <td><b>Запись экрана и звука системы</b></td>
+        <td>Захват системного звука — то, что говорят собеседники в Zoom / Meet / Telegram. Изображение экрана не записывается, только звук.</td>
+      </tr>
+      <tr>
+        <td><b>Распознавание речи</b></td>
+        <td>Живое превью текста во время записи (работает локально через Apple Speech).</td>
+      </tr>
+    </table>
+
+    <div class="callout info">
+      <span class="title">💡 Если случайно нажали «Не разрешать»</span>
+      Откройте <span class="ui">Системные настройки → Конфиденциальность и безопасность</span>, найдите нужный раздел (Микрофон / Запись экрана и звука системы / Распознавание речи) и включите VKRec вручную. После изменения разрешения «Запись экрана» приложение нужно перезапустить.
+    </div>
+
+    <p>Благодаря постоянной цифровой подписи приложения разрешения выдаются <b>один раз</b> — обновления их не сбрасывают.</p>
+  </section>
+
+  <!-- ═══════════ 4. Первая настройка ═══════════ -->
+  <section id="setup">
+    <h2><span class="num">4.</span>Первая настройка</h2>
+    <p class="lead">Откройте настройки кнопкой <span class="ui">⚙️</span> в правом верхнем углу окна. Минимум для полноценной работы — один API-ключ.</p>
+
+    <h3>Вкладка «Основные»</h3>
+    <ol>
+      <li><b>API-ключ OpenRouter</b> — нужен для саммари, итогов встречи и расшифровки Whisper. Получить: <a href="https://openrouter.ai/keys">openrouter.ai/keys</a>.</li>
+      <li><b>Провайдер расшифровки</b> — OpenRouter (обычный текст), Deepgram или Gladia (диалог по спикерам). Для выбранного провайдера укажите его ключ и модель.</li>
+      <li><b>Язык распознавания</b> — для русского выберите <span class="ui">«Русский»</span> явно: это заметно повышает точность.</li>
+      <li><b>Хранить аудио локально</b> — рекомендуем включить: записи можно будет переслушивать и перерасшифровывать (~0.2 МБ на минуту).</li>
+    </ol>
+
+    <div class="callout success">
+      <span class="title">✅ Рекомендуемый набор для встреч на русском</span>
+      Провайдер <b>Gladia</b> (модель Solaria-1) — даёт диалог с разбивкой по спикерам; ключ OpenRouter — для саммари; язык — «Русский»; авто-саммари — включено.
+    </div>
+  </section>
+
+  <!-- ═══════════ 5. Запись ═══════════ -->
+  <section id="recording">
+    <h2><span class="num">5.</span>Запись</h2>
+
+    <h3>Как записать встречу</h3>
+    <ol class="steps">
+      <li>
+        <h4>Выберите источник звука</h4>
+        <p>На экране <span class="ui">«Новая запись»</span>: <b>Микрофон + система</b> (встречи — ваш голос и собеседники), <b>Только микрофон</b> (диктовка), <b>Только система</b> (вебинар без вашего голоса).</p>
+      </li>
+      <li>
+        <h4>Нажмите «Начать запись»</h4>
+        <p>Или используйте горячую клавишу <kbd>⌥⌘R</kbd> — работает из любого приложения. Во время записи текст появляется на экране по мере речи.</p>
+      </li>
+      <li>
+        <h4>Остановите запись</h4>
+        <p>Кнопка <span class="ui">«Остановить и транскрибировать»</span>, снова <kbd>⌥⌘R</kbd> или кнопка «Стоп» на плавающем индикаторе. Живой текст заменится точной расшифровкой выбранного провайдера.</p>
+      </li>
+    </ol>
+
+    <h3>Плавающий индикатор</h3>
+    <p>Когда главное окно не на переднем плане, поверх всех приложений (включая полноэкранные) виден небольшой индикатор записи. Его можно перетаскивать — позиция запоминается. Клик по индикатору открывает окно VKRec, кнопка «Стоп» завершает запись.</p>
+
+    <div class="callout info">
+      <span class="title">💡 Длинные записи</span>
+      Запись длиной в час и больше — не проблема: аудио автоматически режется на части и расшифровывается по очереди с показом прогресса. Gladia обрабатывает асинхронно (~1 минута на час аудио).
+    </div>
+  </section>
+
+  <!-- ═══════════ 6. Горячие клавиши ═══════════ -->
+  <section id="hotkeys">
+    <h2><span class="num">6.</span>Горячие клавиши и меню-бар</h2>
+
+    <table class="bordered">
+      <tr><th>Сочетание</th><th>Действие</th></tr>
+      <tr><td><kbd>⌥⌘R</kbd></td><td>Начать / остановить запись — не переключаясь из текущего приложения</td></tr>
+      <tr><td><kbd>⌥⌘V</kbd></td><td>Показать окно VKRec на текущем экране</td></tr>
+    </table>
+
+    <p>Сочетания работают <b>глобально</b> — даже когда вы в Zoom или браузере.</p>
+
+    <h3>Иконка в меню-баре</h3>
+    <p>VKRec живёт в строке меню (справа вверху экрана): старт/стоп записи, открытие окна, индикатор доступного обновления и выход. Закрытие главного окна не завершает приложение — запись продолжается в фоне.</p>
+  </section>
+
+  <!-- ═══════════ 7. История ═══════════ -->
+  <section id="history" class="allow-break">
+    <h2><span class="num">7.</span>История и карточка записи</h2>
+    <p class="lead">Левая панель — шапка с поиском и кнопкой «Новая запись», ниже — история. В строке записи: число спикеров (👥 2), название, дата, длительность, значок ✨ у записей с саммари и тег.</p>
+
+    <h3>Поиск и фильтр</h3>
+    <ul>
+      <li><b>Поиск</b> — по названию и тексту расшифровки.</li>
+      <li><b>Фильтр по тегам</b> — кнопка слева от поиска: все записи, без тегов или конкретный тег. Активный фильтр показан чипом в строке поиска, сброс — по ✕.</li>
+    </ul>
+
+    <h3>Карточка записи</h3>
+    <table class="bordered">
+      <tr><th>Блок</th><th>Что можно делать</th></tr>
+      <tr>
+        <td><b>Заголовок</b></td>
+        <td>Кликните и отредактируйте. Сохраняется по Enter или при уходе фокуса. При генерации саммари название подставляется автоматически.</td>
+      </tr>
+      <tr>
+        <td><b>Метаданные</b></td>
+        <td>Дата, длительность, источник, язык и суммарная стоимость обработки ($).</td>
+      </tr>
+      <tr>
+        <td><b>Теги</b></td>
+        <td>Кнопка <span class="ui">+ Тег</span> открывает выбор цветных чипов (см. раздел 9).</td>
+      </tr>
+      <tr>
+        <td><b>Аудио</b></td>
+        <td>Встроенный плеер: воспроизведение, перемотка, тайминги (если включено локальное хранение).</td>
+      </tr>
+      <tr>
+        <td><b>Саммари</b></td>
+        <td>Генерация / обновление резюме, копирование.</td>
+      </tr>
+      <tr>
+        <td><b>Итоги встречи</b></td>
+        <td>Протокол в PDF (см. раздел 8).</td>
+      </tr>
+      <tr>
+        <td><b>Транскрипция / Диалог</b></td>
+        <td>Полный текст. Для Deepgram/Gladia — в виде диалога: Спикер&nbsp;1, Спикер&nbsp;2… Кнопка <span class="ui">«Запустить заново»</span> перерасшифровывает аудио текущими настройками — удобно, если сменили провайдера.</td>
+      </tr>
+    </table>
+
+    <p>В панели инструментов карточки: <span class="ui">Экспорт</span> (текст + саммари в .txt) и <span class="ui">Удалить</span>. Удалить запись можно также правым кликом в списке истории.</p>
+  </section>
+
+  <!-- ═══════════ 8. Саммари ═══════════ -->
+  <section id="summary">
+    <h2><span class="num">8.</span>Саммари и итоги встречи</h2>
+
+    <h3>Саммари</h3>
+    <p>Краткое резюме: 1–2 предложения сути + ключевые пункты списком. Вместе с саммари модель придумывает <b>название записи</b> — оно заменяет техническое название из первых слов расшифровки (название всегда можно поправить вручную).</p>
+    <ul>
+      <li>Автоматически после каждой записи — включите <span class="ui">«Делать саммари автоматически»</span> в настройках (вкладка «Саммари»).</li>
+      <li>Вручную — кнопка <span class="ui">«Сгенерировать саммари»</span> в карточке записи.</li>
+      <li>Модель выбирается в настройках; по умолчанию GPT-4o mini — быстро и дёшево.</li>
+    </ul>
+
+    <h3>Итоги встречи (PDF)</h3>
+    <p>Кнопка <span class="ui">«Сформировать итоги встречи»</span> генерирует полноценный протокол: резюме, принятые решения, задачи с ответственными, таймлайн. Результат сохраняется в PDF и показывается в Finder.</p>
+    <ul>
+      <li>Модель для итогов настраивается отдельно (по умолчанию Gemini 3.1 Pro — сильна в вёрстке).</li>
+      <li>Промпт протокола можно отредактировать под свои стандарты (вкладка «Саммари» → «Промпт для итогов встречи»), есть кнопка сброса к стандартному.</li>
+    </ul>
+
+    <div class="callout info">
+      <span class="title">💡 Стоимость</span>
+      Цена каждой операции видна прямо в приложении: рядом с саммари и суммарно в шапке карточки. Обычно саммари стоит доли цента.
+    </div>
+  </section>
+
+  <!-- ═══════════ 9. Теги ═══════════ -->
+  <section id="tags">
+    <h2><span class="num">9.</span>Теги</h2>
+    <p class="lead">Теги помогают организовать записи: <span class="pill blue">ВК</span> <span class="pill green">1-на-1</span> <span class="pill orange">Планёрка</span></p>
+
+    <ol>
+      <li><b>Создайте теги</b> — Настройки → вкладка <span class="ui">«Теги»</span>: название + один из 8 цветов. Там же теги можно переименовать или удалить.</li>
+      <li><b>Назначьте на запись</b> — в карточке записи нажмите <span class="ui">+ Тег</span> и кликайте по чипам: клик добавляет или убирает тег, окно остаётся открытым для выбора нескольких. Снять тег можно и по ✕ на его пилюле.</li>
+      <li><b>Фильтруйте историю</b> — кнопка фильтра слева от поиска: у каждого тега виден счётчик записей.</li>
+    </ol>
+  </section>
+
+  <!-- ═══════════ 10. Провайдеры ═══════════ -->
+  <section id="providers">
+    <h2><span class="num">10.</span>Провайдеры расшифровки</h2>
+
+    <table class="bordered">
+      <tr><th>Провайдер</th><th>Диалог по спикерам</th><th>Когда выбирать</th></tr>
+      <tr>
+        <td><b>OpenRouter</b> (Whisper)</td>
+        <td>Нет</td>
+        <td>Диктовки и монологи. Один ключ и для саммари, и для расшифровки.</td>
+      </tr>
+      <tr>
+        <td><b>Deepgram</b></td>
+        <td>Да</td>
+        <td>Быстрая расшифровка встреч. Ключ: <a href="https://console.deepgram.com">console.deepgram.com</a>.</td>
+      </tr>
+      <tr>
+        <td><b>Gladia</b></td>
+        <td>Да</td>
+        <td>Лучший выбор для русского (модель Solaria-1). Асинхронная обработка: ~1 мин на час аудио. Ключ: <a href="https://app.gladia.io">app.gladia.io</a>.</td>
+      </tr>
+    </table>
+
+    <p>Провайдера можно менять в любой момент — а старые записи перерасшифровать кнопкой <span class="ui">«Запустить заново»</span> в карточке (нужно включённое локальное хранение аудио).</p>
+
+    <h3>Журнал запросов</h3>
+    <p>Все обращения к ИИ-сервисам пишутся в файл (без аудио-данных) — полезно при разборе проблем. Открыть: Настройки → «Основные» → <span class="ui">«Открыть журнал»</span>.</p>
+  </section>
+
+  <!-- ═══════════ 11. Обновления ═══════════ -->
+  <section id="updates">
+    <h2><span class="num">11.</span>Обновления</h2>
+    <p class="lead">VKRec проверяет обновления автоматически раз в час и обновляется сам — DMG нужен только для первой установки.</p>
+    <ul>
+      <li>О новой версии сигналят: модальное окно, зелёная кнопка в панели инструментов и пункт в меню-баре.</li>
+      <li>Установка бесшовная: версия скачивается в фоне, приложение перезапускается само. Разрешения не сбрасываются.</li>
+      <li>Проверить вручную: Настройки → <span class="ui">«Обновления»</span> → «Проверить обновления». Там же виден номер текущей версии.</li>
+      <li>Если репозиторий обновлений приватный — вставьте GitHub-токен (fine-grained, право Contents: Read-only) в этой же вкладке.</li>
+    </ul>
+    <div class="callout success">
+      <span class="title">✅ Карантин снимать больше не придётся</span>
+      Если команда <code>xattr</code> понадобилась при первой установке из DMG — больше она не нужна: авто-обновления ставятся без карантина.
+    </div>
+  </section>
+
+  <!-- ═══════════ 12. FAQ ═══════════ -->
+  <section id="faq" class="allow-break">
+    <h2><span class="num">12.</span>Частые вопросы</h2>
+
+    <h3>«Приложение повреждено» или «Не удаётся проверить разработчика»</h3>
+    <p>macOS пометила приложение карантином при загрузке (случается не всегда — зависит от способа передачи файла). Выполните в Терминале и запустите приложение снова:</p>
+    <pre><code>xattr -dr com.apple.quarantine /Applications/VKRec.app</code></pre>
+
+    <h3>Не слышно собеседников в записи</h3>
+    <p>Проверьте: источник — <span class="ui">«Микрофон + система»</span>, и разрешение <span class="ui">«Запись экрана и звука системы»</span> выдано (Системные настройки → Конфиденциальность и безопасность). После выдачи разрешения перезапустите VKRec.</p>
+
+    <h3>Живой текст не появляется во время записи</h3>
+    <p>Не выдано разрешение «Распознавание речи», или речь идёт не на выбранном языке. Живое превью — черновик: точный текст появится после остановки записи.</p>
+
+    <h3>Расшифровка не запускается после остановки</h3>
+    <p>Проверьте API-ключ выбранного провайдера в настройках. Детали ошибки — в журнале запросов (Настройки → «Основные» → «Открыть журнал»).</p>
+
+    <h3>Плохое качество расшифровки на русском</h3>
+    <p>Выберите язык <span class="ui">«Русский»</span> явно (не «Авто») и попробуйте провайдера Gladia с моделью Solaria-1.</p>
+
+    <h3>Где хранятся мои данные?</h3>
+    <p>Всё локально: <code>~/Library/Application&nbsp;Support/VKRec/</code> — записи (.json + .m4a), теги и журнал. В облако аудио отправляется только на расшифровку выбранному провайдеру.</p>
+
+    <h3>Запись остановилась при закрытии окна?</h3>
+    <p>Нет — приложение продолжает записывать в фоне. Управляйте через меню-бар, плавающий индикатор или <kbd>⌥⌘R</kbd>.</p>
+  </section>
+
+  <footer>
+    VKRec · Руководство пользователя · версия приложения 1.0.14 · июль 2026
+  </footer>
+
+</div>
+</body>
+</html>
